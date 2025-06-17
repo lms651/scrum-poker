@@ -1,0 +1,83 @@
+:root {
+  --mainColor: #07c;
+  --baseColor: #fff;
+}
+
+body {
+  background-color: rgb(208, 207, 207);
+  font-family: sans-serif;
+  padding: 40px;
+}
+
+.wizard-progress {
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.wizard-progress::before {
+  content: '';
+  position: absolute;
+  top: 34px;
+  left: 0;
+  right: 0;
+  height: 6px;
+  background-color: var(--baseColor);
+  z-index: 0;
+}
+
+.wizard-progress .step {
+  position: relative;
+  text-align: center;
+  flex: 1;
+  color: var(--baseColor);
+  font-weight: bold;
+  font-size: 14px;
+  z-index: 1;
+}
+
+.wizard-progress .step .node {
+  width: 36px;
+  height: 36px;
+  background-color: var(--baseColor);
+  border: 6px solid var(--baseColor);
+  border-radius: 50%;
+  margin: 0 auto 10px auto;
+  position: relative;
+  z-index: 2;
+}
+
+.wizard-progress .step.complete .node {
+  background-color: var(--mainColor);
+  border-color: var(--mainColor);
+}
+
+.wizard-progress .step.complete .node::before {
+  content: "\f00c";
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+  color: #000;
+  position: absolute;
+  font-size: 14px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.wizard-progress .step.in-progress .node {
+  border-color: var(--mainColor);
+}
+
+.wizard-progress .step.in-progress::before {
+  content: '';
+  position: absolute;
+  top: 34px;
+  left: 50%;
+  right: 0;
+  height: 6px;
+  background: linear-gradient(to right, var(--mainColor), var(--baseColor));
+  z-index: 0;
+}

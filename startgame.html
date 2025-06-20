@@ -17,7 +17,7 @@
     
   <link rel="stylesheet" href="stylesheet.css">
     
-  <title>Scrum Poker | Welcome</title>
+  <title>Scrum Poker | Product Owner</title>
 
 </head>
 <body>
@@ -90,7 +90,9 @@ window.onload = function () {
         event.stopPropagation();
         form.classList.add('was-validated');
       } else {
-        // Validated — redirect to next page
+        // Validated — redirect to next page and save PO initials
+        const initials = document.getElementById('initials').value.trim().toUpperCase();
+        localStorage.setItem('productOwnerInitials', initials);
         window.location.href = "assembleTeam.html";
       }
     });

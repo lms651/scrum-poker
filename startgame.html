@@ -7,8 +7,8 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-  <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"> -->
 
+  <!--progress bar-->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 
@@ -34,20 +34,25 @@
   </div>
 </div>
 
+<form class="needs-validation" novalidate>
+
 <div class="container">
   <div class="row">
     <div class="col-sm-4">
       <h3>Enter your initials</h3>
-      <input type="text" class="form-control form-control-sm" id="initials" maxlength="2" style="width: 60px;" placeholder="AB" oninput="this.value = this.value.replace(/[^a-zA-Z]/g, '')">
+      <input type="text" class="form-control form-control-sm" id="initials" 
+      maxlength="2" style="width: 60px;" placeholder="AB" 
+      oninput="this.value = this.value.replace(/[^a-zA-Z]/g, '')" required>
     </div>
+
     <div class="col-sm-4">
       <h3>Enter User Story:</h3>
       <div class="form-group">
       <label for="exampleFormControlTextarea1"><i>Written in canonical form</i></label>
-      <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+      <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" required></textarea>
+      </div>
     </div>
-</form>
-    </div>
+
     <div class="col-sm-4">
       <h3>Choose a points system:</h3>
         <div class="form-check">
@@ -55,17 +60,45 @@
         <label class="form-check-label" for="radioDefault1">Days</label>
         </div>
         <div class="form-check">
-        <input class="form-check-input" type="radio" class="btn-check" name="radioDefault" id="radioDefault1">
+        <input class="form-check-input" type="radio" class="btn-check" name="radioDefault" id="radioDefault1" checked>
         <label class="form-check-label" for="radioDefault1">Fibonacci</label>
         </div>
       <div class="form-check">
-        <input class="form-check-input" type="radio" class="btn-check" name="radioDefault" id="radioDefault2" checked>
+        <input class="form-check-input" type="radio" class="btn-check" name="radioDefault" id="radioDefault2">
         <label class="form-check-label" for="radioDefault2">T-shirt sizes</label>
       </div>
     </div>
-    </div>
   </div>
+  <br>
+
+  <div class="d-flex justify-content-center">
+    <button type="submit" class="btn btn-primary btn-lg">Add your team</button>
+  </div>
+
+  </form>
 </div>
+
+<script>
+window.onload = function () {
+  const forms = document.querySelectorAll('.needs-validation');
+
+  Array.from(forms).forEach(form => {
+    form.addEventListener('submit', event => {
+      event.preventDefault();
+
+      if (!form.checkValidity()) {
+        event.stopPropagation();
+        form.classList.add('was-validated');
+      } else {
+        // Validated — redirect to next page
+        window.location.href = "assembleTeam.html";
+      }
+    });
+  });
+};
+</script>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>

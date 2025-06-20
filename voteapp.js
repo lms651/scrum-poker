@@ -91,7 +91,21 @@ document.addEventListener('DOMContentLoaded', () => {
   const poCircle = document.getElementById('po-circle');
   if (poCircle && poInitials) {
     poCircle.textContent = poInitials;
-  }
+  }    
+
+  // to Allow PO to vote too
+  
+  poCircle.dataset.initials = poInitials;  // for reference in modal
+    poCircle.style.cursor = 'pointer';
+
+    poCircle.addEventListener('click', () => {
+      document.getElementById('voteModalLabel').textContent = `Vote for ${poInitials}`;
+      document.getElementById('voteInput').value = votes[poInitials] || '';
+      document.getElementById('submitVote').dataset.initials = poInitials;
+      const modal = new bootstrap.Modal(document.getElementById('voteModal'));
+      modal.show();
+    });
+  
 
   // Load teammates
   const teammates = JSON.parse(localStorage.getItem('teammatesInitials') || '[]');
@@ -123,6 +137,8 @@ document.addEventListener('DOMContentLoaded', () => {
     slot.appendChild(circle);
     grid.appendChild(slot);
   });
+
+  
 
   // Submit vote
   document.getElementById('submitVote').addEventListener('click', () => {

@@ -1,166 +1,126 @@
-// document.addEventListener('DOMContentLoaded', () => {
-
-//   // Load PO initials as before
-//   const poInitials = localStorage.getItem('productOwnerInitials');
-//   const poCircle = document.getElementById('po-circle');
-//   if (poCircle) {
-//     poCircle.textContent = poInitials;
-//   }
-
-//   // Load teammates initials
-//   const teammates = JSON.parse(localStorage.getItem('teammatesInitials') || '[]');
-//   const grid = document.getElementById('teammate-slots');
-
-//   teammates.forEach(initials => {
-//     // Create slot div
-//     const slot = document.createElement('div');
-//     slot.className = 'col-6 col-md-4 d-flex justify-content-center mb-4 teammate-slot';
-
-//     // Create circle div with initials
-//     const circle = document.createElement('div');
-//     circle.className = 'circle';
-//     circle.textContent = initials;
-
-//     // Append circle to slot, slot to grid
-//     slot.appendChild(circle);
-//     grid.appendChild(slot);
-//   });
-// });
-
-// document.addEventListener('DOMContentLoaded', () => {
-//   // Load PO initials
-//   const poInitials = localStorage.getItem('productOwnerInitials');
-//   const poCircle = document.getElementById('po-circle');
-//   if (poInitials && poCircle) {
-//     poCircle.textContent = poInitials;
-//   }
-
-//   // Load teammates
-//   const grid = document.getElementById('teammate-slots');
-//   if (!grid) return;
-
-//   const teammates = JSON.parse(localStorage.getItem('teammatesInitials') || '[]');
-
-//   teammates.forEach(initials => {
-//     const slot = document.createElement('div');
-//     slot.className = 'col-6 col-md-4 d-flex justify-content-center mb-4 teammate-slot';
-
-//     const circle = document.createElement('div');
-//     circle.className = 'circle';
-//     circle.textContent = initials;
-
-//     slot.appendChild(circle);
-//     grid.appendChild(slot);
-//   });
-// });
-
-// document.addEventListener('DOMContentLoaded', () => {
-//   // Load PO initials from localStorage and display
-//   const poInitials = localStorage.getItem('productOwnerInitials');
-//   const poCircle = document.getElementById('po-circle');
-//   if (poCircle && poInitials) {
-//     poCircle.textContent = poInitials;
-//   }
-
-//   // Load teammates initials array from localStorage
-//   const teammates = JSON.parse(localStorage.getItem('teammatesInitials') || '[]');
-
-//     console.log('Teammates:', teammates);
-
-//   // Get the container where teammate circles will be added
-//   const grid = document.getElementById('teammate-slots');
-//   if (!grid || !Array.isArray(teammates)) return;
-
-//   // For each teammate initial, create the column and circle and append
-//   teammates.forEach(initials => {
-//     const slot = document.createElement('div');
-//     slot.className = 'col-6 col-md-4 d-flex justify-content-center mb-4 teammate-slot';
-
-//     const circle = document.createElement('div');
-//     circle.className = 'circle';
-//     circle.textContent = initials;
-
-//     slot.appendChild(circle);
-//     grid.appendChild(slot);
-//   });
-// });
+// voteapp.js
 
 document.addEventListener('DOMContentLoaded', () => {
+  // Clear votes on page load/navigation to start fresh each time
+  localStorage.removeItem('votes');
+
   // Load PO initials
   const poInitials = localStorage.getItem('productOwnerInitials');
   const poCircle = document.getElementById('po-circle');
+
+  // Initialize votes object in-memory
+  let votes = {};
+
   if (poCircle && poInitials) {
     poCircle.textContent = poInitials;
-  }    
-
-  // to Allow PO to vote too
-  
-  poCircle.dataset.initials = poInitials;  // for reference in modal
+    poCircle.dataset.initials = poInitials;
     poCircle.style.cursor = 'pointer';
 
+    // PO voting handler
     poCircle.addEventListener('click', () => {
       document.getElementById('voteModalLabel').textContent = `Vote for ${poInitials}`;
       document.getElementById('voteInput').value = votes[poInitials] || '';
       document.getElementById('submitVote').dataset.initials = poInitials;
-      const modal = new bootstrap.Modal(document.getElementById('voteModal'));
-      modal.show();
+      new bootstrap.Modal(document.getElementById('voteModal')).show();
     });
-  
+  }
 
-  // Load teammates
+  // Load teammates from localStorage
   const teammates = JSON.parse(localStorage.getItem('teammatesInitials') || '[]');
   const grid = document.getElementById('teammate-slots');
   if (!grid || !Array.isArray(teammates)) return;
 
-  // Track votes (in memory for now; could save to localStorage)
-  const votes = {};
-
+  // Render each teammate
   teammates.forEach(initials => {
     const slot = document.createElement('div');
-    slot.className = 'col-6 col-md-4 d-flex justify-content-center mb-4 teammate-slot';
+    slot.className = 'col-6 col-md-4 d-flex align-items-center mb-4 teammate-slot';
 
+    // Circle
     const circle = document.createElement('div');
     circle.className = 'circle';
     circle.textContent = initials;
-    circle.dataset.initials = initials; // for reference in modal
+    circle.dataset.initials = initials;
     circle.style.cursor = 'pointer';
 
-    // Click handler to open modal
     circle.addEventListener('click', () => {
       document.getElementById('voteModalLabel').textContent = `Vote for ${initials}`;
       document.getElementById('voteInput').value = votes[initials] || '';
       document.getElementById('submitVote').dataset.initials = initials;
-      const modal = new bootstrap.Modal(document.getElementById('voteModal'));
-      modal.show();
+      new bootstrap.Modal(document.getElementById('voteModal')).show();
     });
 
-    slot.appendChild(circle);
-    grid.appendChild(slot);
-  });
-
-  
-
-  // Submit vote
-  document.getElementById('submitVote').addEventListener('click', () => {
-    const initials = document.getElementById('submitVote').dataset.initials;
-    const voteValue = document.getElementById('voteInput').value.trim();
-
-    if (voteValue === '') return;
-
-    // Save vote
-    votes[initials] = voteValue;
-
-    // Add voted style (green circle)
-    const circles = document.querySelectorAll('.circle');
-    circles.forEach(c => {
-      if (c.dataset.initials === initials) {
-        c.classList.add('voted');
+    // Remove button
+    const removeBtn = document.createElement('button');
+    removeBtn.textContent = '×';
+    removeBtn.className = 'btn btn-sm btn-outline-danger ms-2';
+    removeBtn.title = `Remove ${initials}`;
+    removeBtn.style.cursor = 'pointer';
+    removeBtn.addEventListener('click', e => {
+      e.stopPropagation();
+      slot.remove();
+      const idx = teammates.indexOf(initials);
+      if (idx !== -1) {
+        teammates.splice(idx, 1);
+        localStorage.setItem('teammatesInitials', JSON.stringify(teammates));
+      }
+      // Remove vote from in-memory and storage
+      if (votes[initials]) {
+        delete votes[initials];
+        localStorage.setItem('votes', JSON.stringify(votes));
       }
     });
 
-    // Close modal
-    const modalElement = document.getElementById('voteModal');
-    const modal = bootstrap.Modal.getInstance(modalElement);
-    modal.hide();
+    slot.appendChild(circle);
+    slot.appendChild(removeBtn);
+    grid.appendChild(slot);
   });
+
+  // Submit vote handler
+  document.getElementById('submitVote').addEventListener('click', () => {
+    const initials = document.getElementById('submitVote').dataset.initials;
+    const voteValue = document.getElementById('voteInput').value.trim();
+    if (!voteValue) return;
+
+    // Update in-memory and persist to localStorage
+    votes[initials] = voteValue;
+    localStorage.setItem('votes', JSON.stringify(votes));
+
+    // Mark voted
+    document.querySelectorAll('.circle').forEach(c => {
+      if (c.dataset.initials === initials) c.classList.add('voted');
+    });
+
+    bootstrap.Modal.getInstance(document.getElementById('voteModal')).hide();
+  });
+
+  // Tally votes
+  const tallyBtn = document.getElementById('tally-votes');
+  if (tallyBtn) {
+    tallyBtn.addEventListener('click', () => {
+      const allVotes = JSON.parse(localStorage.getItem('votes') || '{}');
+
+      console.log('--- Vote Details ---');
+      Object.entries(allVotes).forEach(([init, val]) => console.log(`${init}: ${val}`));
+
+      const values = Object.values(allVotes)
+        .map(v => parseFloat(v))
+        .filter(v => !isNaN(v));
+
+      if (values.length === 0) {
+        alert('No votes cast yet!');
+        return;
+      }
+
+      const sum = values.reduce((a, b) => a + b, 0);
+      const avg = sum / values.length;
+
+      document.getElementById('resultsBody').textContent = `Average vote: ${avg.toFixed(2)}`;
+      new bootstrap.Modal(document.getElementById('resultsModal')).show();
+    });
+  }
+});
+
+// Clear votes when leaving page
+window.addEventListener('beforeunload', () => {
+  localStorage.removeItem('votes');
 });

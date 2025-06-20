@@ -32,6 +32,10 @@
     font-size: 24px;
     margin: 0 auto;
   }
+
+  .po-circle {
+  background-color: #dc3545; /* bootstrap danger red or any color you want */
+  }
 </style>
     
   <title>Scrum Poker | Assemble Team</title>
@@ -58,26 +62,23 @@
       <h2>Teammates</h2>
     </div>
 
-    <!-- Product Owner row: spans 2 columns on small+ -->
-    <div class="col-12 col-sm-8 offset-sm-2 text-center mb-4">
-      <div class="circle mx-auto" id="po-circle">PO</div>
+    <div id="teammate-slots" class="row px-5">
+      <!--Product Owner Slot-->
+      <div class="col-12 col-sm-8 offset-sm-2 text-center mb-4">
+      <div class="circle po-circle mx-auto" id="po-circle">PO</div>
       <p class="mt-2">Product Owner</p>
-
+      </div>
+    <!-- Teammate slots. Icons go here -->
+      <div class="col-6 col-md-4 d-flex justify-content-center mb-4 teammate-slot"></div>
+      <div class="col-6 col-md-4 d-flex justify-content-center mb-4 teammate-slot"></div>
+      <div class="col-6 col-md-4 d-flex justify-content-center mb-4 teammate-slot"></div>
+      <div class="col-6 col-md-4 d-flex justify-content-center mb-4 teammate-slot"></div>
+      <div class="col-6 col-md-4 d-flex justify-content-center mb-4 teammate-slot"></div>
+      <div class="col-6 col-md-4 d-flex justify-content-center mb-4 teammate-slot"></div>
+      <!-- Add more if needed -->
     </div>
-
-    <!-- Teammate slots -->
-    <div class="col-6 col-md-4 d-flex justify-content-center mb-4">
-      <!-- Teammate initials go here -->
-    </div>
-    <div class="col-6 col-md-4 d-flex justify-content-center mb-4"></div>
-    <div class="col-6 col-md-4 d-flex justify-content-center mb-4"></div>
-    <!-- Add more if needed -->
   </div>
 </div>
-
-<!-- <div class="text-center mb-4">
-  <button id="add-teammate-btn" class="btn btn-primary">Add Teammate</button>
-</div> -->
 
 <div class="container my-4 text-center">
   <h3>Enter teammate initials</h3>

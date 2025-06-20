@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const initials = input.value.trim().toUpperCase();
     if (!/^[A-Z]{1,2}$/.test(initials)) return;
 
-    const slots = document.querySelectorAll('.col-6.col-md-4');
+    const slots = document.querySelectorAll('.teammate-slot');
     for (const slot of slots) {
       if (slot.innerHTML.trim() === '') {
         const circle = document.createElement('div');

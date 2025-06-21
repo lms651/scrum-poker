@@ -93,34 +93,57 @@ document.addEventListener('DOMContentLoaded', () => {
     bootstrap.Modal.getInstance(document.getElementById('voteModal')).hide();
   });
 
+    // Helper: next Fibonacci >= n
+  function nextFibonacci(n) {
+    let a = 1, b = 1;
+    while (b < n) {
+      [a, b] = [b, a + b];
+    }
+    return b;
+  }
+
   // Tally votes
   const tallyBtn = document.getElementById('tally-votes');
   if (tallyBtn) {
     tallyBtn.addEventListener('click', () => {
       const allVotes = JSON.parse(localStorage.getItem('votes') || '{}');
-
       console.log('--- Vote Details ---');
       Object.entries(allVotes).forEach(([init, val]) => console.log(`${init}: ${val}`));
 
-      const values = Object.values(allVotes)
-        .map(v => parseFloat(v))
-        .filter(v => !isNaN(v));
+      const method = localStorage.getItem('scoringMethod') || 'days';
+      let result;
 
-      if (values.length === 0) {
-        alert('No votes cast yet!');
-        return;
+      if (method === 'days') {
+        const vals = Object.values(allVotes).map(v => parseFloat(v)).filter(v => !isNaN(v));
+        const avg = vals.reduce((a, b) => a + b, 0) / vals.length;
+        result = avg.toFixed(2);
+      } else if (method === 'fibonacci') {
+        const vals = Object.values(allVotes).map(v => parseFloat(v)).filter(v => !isNaN(v));
+        const avg = vals.reduce((a, b) => a + b, 0) / vals.length;
+        result = nextFibonacci(avg);
+      } else if (method === 'tshirt') {
+        const sizeMap = { XS: 1, S: 2, M: 3, L: 4, XL: 5 };
+        const reverseMap = { 1: 'XS', 2: 'S', 3: 'M', 4: 'L', 5: 'XL' };
+        const mapped = Object.values(allVotes)
+          .map(v => sizeMap[v.toUpperCase()])
+          .filter(v => v !== undefined);
+
+        if (mapped.length === 0) {
+          result = 'No valid votes';
+        } else {
+          const avg = mapped.reduce((a, b) => a + b, 0) / mapped.length;
+          const rounded = Math.ceil(avg);
+          result = reverseMap[rounded] || 'Unknown';
+        }
       }
 
-      const sum = values.reduce((a, b) => a + b, 0);
-      const avg = sum / values.length;
-
-      document.getElementById('resultsBody').textContent = `Average vote: ${avg.toFixed(2)}`;
+      document.getElementById('resultsBody').textContent = `Result (${method}): ${result}`;
       new bootstrap.Modal(document.getElementById('resultsModal')).show();
     });
   }
 });
 
-// Clear votes when leaving page
+// Clear votes on unload
 window.addEventListener('beforeunload', () => {
   localStorage.removeItem('votes');
 });

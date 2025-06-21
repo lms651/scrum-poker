@@ -88,7 +88,7 @@ editBtn.addEventListener('click', () => {
     // Remove button
     const removeBtn = document.createElement('button');
     removeBtn.textContent = '×';
-    removeBtn.className = 'btn btn-sm btn-outline-danger ms-2';
+    removeBtn.className = 'btn btn-sm btn-outline-dark ms-2';
     removeBtn.title = `Remove ${initials}`;
     removeBtn.style.cursor = 'pointer';
     removeBtn.addEventListener('click', e => {
@@ -112,10 +112,34 @@ editBtn.addEventListener('click', () => {
   });
 
   // Submit vote handler
-  document.getElementById('submitVote').addEventListener('click', () => {
-    const initials = document.getElementById('submitVote').dataset.initials;
-    const voteValue = document.getElementById('voteInput').value.trim();
-    if (!voteValue) return;
+document.getElementById('submitVote').addEventListener('click', () => {
+  const initials = document.getElementById('submitVote').dataset.initials;
+  const voteValue = document.getElementById('voteInput').value.trim();
+  if (!voteValue) return;
+
+  const method = localStorage.getItem('scoringMethod') || 'days';
+
+  // Validation based on scoring method
+  if (method === 'fibonacci') {
+    const fibSet = new Set([1, 2, 3, 5, 8, 13, 21, 34, 55, 89]);
+    const num = parseInt(voteValue, 10);
+    if (!fibSet.has(num)) {
+      alert("Please enter a valid Fibonacci number: 1, 2, 3, 5, 8, 13, 21, 34, 55, 89...");
+      return;
+    }
+  } else if (method === 'tshirt') {
+    const validSizes = ['XS', 'S', 'M', 'L', 'XL'];
+    if (!validSizes.includes(voteValue.toUpperCase())) {
+      alert("Please enter a valid T-shirt size: XS, S, M, L, XL");
+      return;
+    }
+  } else if (method === 'days') {
+    const num = parseFloat(voteValue);
+    if (isNaN(num) || num < 0) {
+      alert("Please enter a valid number");
+      return;
+    }
+  }
 
     // Update in-memory and persist to localStorage
     votes[initials] = voteValue;
@@ -191,11 +215,6 @@ document.getElementById('end-game').addEventListener('click', () => {
   document.getElementById('po-circle').textContent = '';
   document.getElementById('story-text').textContent = '';
 
-  // Redirect to the setup/start page
-  window.location.href = 'index.html'; // ← change if your main page has a different name
+  // Redirect to start page
+  window.location.href = 'index.html';
 });
-
-// Clear on unload
-// window.addEventListener('beforeunload', () => {
-//   localStorage.removeItem('votes');
-// });

@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
     poCircle.textContent = poInitials;
   }
 
-  localStorage.removeItem('teammatesInitials');
+  // localStorage.removeItem('teammatesInitials');
 
 
   // Add teammate button logic

@@ -1,8 +1,49 @@
-// voteapp.js
+// import { calculateVote } from "./calculateVote";
 
 document.addEventListener('DOMContentLoaded', () => {
   // Clear votes on page load/navigation to start fresh each time
   localStorage.removeItem('votes');
+
+  // User Story set up
+const storyInput = document.getElementById('story-input');
+const submitBtn = document.getElementById('submit-story');
+const storyForm = document.getElementById('story-form');
+const storyDisplay = document.getElementById('story-display');
+const storyText = document.getElementById('story-text');
+const editBtn = document.getElementById('edit-story');
+
+// Submit story and display it
+submitBtn.addEventListener('click', () => {
+  const text = storyInput.value.trim();
+  if (!text) return;
+
+  storyText.textContent = text;
+  storyForm.classList.add('d-none');
+  storyDisplay.classList.remove('d-none');
+  storyInput.value = '';
+});
+
+// Show input again to enter a new story
+editBtn.addEventListener('click', () => {
+  storyForm.classList.remove('d-none');
+  storyDisplay.classList.add('d-none');
+  storyInput.focus();
+});
+
+document.getElementById('edit-story').addEventListener('click', () => {
+  // Show the input form again
+  document.getElementById('story-form').style.display = 'block';
+  const storyText = document.getElementById('story-text');
+  storyText.textContent = '';
+  storyText.style.display = 'none';
+
+  // Reset votes in memory and localStorage
+  votes = {};
+  localStorage.removeItem('votes');
+
+  // Remove voted styling from teammate circles
+  document.querySelectorAll('.circle').forEach(c => c.classList.remove('voted'));
+});
 
   // Load PO initials
   const poInitials = localStorage.getItem('productOwnerInitials');

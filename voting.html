@@ -46,7 +46,7 @@
     <h1 class="display-6 display-md-4 fw-bold">Cast your votes</h1>
     <p class="lead">Click on your icon to vote (or change) vote:</p>
   </div>
-</div>
+</div><br>
 
 <div class="progress">
   <div class="progress-bar" role="progressbar" aria-valuenow="75"
@@ -58,9 +58,20 @@
 <div class="container">
   <div class="row" id="teammate-grid">
     <!-- Full width centered heading -->
-    <div class="col-12 text-center mb-4">
-      <h2>Teammates</h2>
-    </div>
+
+<div id="story-section" class="mb-4">
+  <h4>User Story</h4>
+  
+  <div id="story-form">
+    <input type="text" id="story-input" class="form-control mb-2" placeholder="Enter a user story">
+    <button id="submit-story" class="btn btn-primary">Submit Story</button>
+  </div>
+  
+  <div id="story-display" class="d-none">
+    <p class="border p-2 bg-light text-center fw-bold" id="story-text"></p>
+    <button id="edit-story" class="btn btn-outline-secondary btn-sm mt-2">Create New Story</button>
+  </div>
+</div>
 
     <!-- Product Owner Slot -->
     <div class="col-12 col-sm-8 offset-sm-2 text-center mb-4">

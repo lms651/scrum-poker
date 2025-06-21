@@ -28,14 +28,6 @@ editBtn.addEventListener('click', () => {
   storyForm.classList.remove('d-none');
   storyDisplay.classList.add('d-none');
   storyInput.focus();
-});
-
-document.getElementById('edit-story').addEventListener('click', () => {
-  // Show the input form again
-  document.getElementById('story-form').style.display = 'block';
-  const storyText = document.getElementById('story-text');
-  storyText.textContent = '';
-  storyText.style.display = 'none';
 
   // Reset votes in memory and localStorage
   votes = {};
@@ -82,6 +74,9 @@ document.getElementById('edit-story').addEventListener('click', () => {
     circle.textContent = initials;
     circle.dataset.initials = initials;
     circle.style.cursor = 'pointer';
+
+    console.log('Loaded teammates:', teammates);
+
 
     circle.addEventListener('click', () => {
       document.getElementById('voteModalLabel').textContent = `Vote for ${initials}`;
@@ -184,7 +179,7 @@ document.getElementById('edit-story').addEventListener('click', () => {
   }
 });
 
-// Clear votes on unload
+// Clear on unload
 window.addEventListener('beforeunload', () => {
   localStorage.removeItem('votes');
 });

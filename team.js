@@ -6,10 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
     poCircle.textContent = poInitials;
   }
 
-  // localStorage.removeItem('teammatesInitials');
-
-
-  // Add teammate button logic
+  // Teammate button logic
   const addBtn = document.getElementById('add-teammate-btn');
   const input = document.getElementById('new-initials');
   if (!addBtn || !input) return;
@@ -28,8 +25,8 @@ document.addEventListener('DOMContentLoaded', () => {
     let teammates = JSON.parse(localStorage.getItem('teammatesInitials') || '[]');
 
     if (!teammates.includes(initials)) {
-    teammates.push(initials);
-    localStorage.setItem('teammatesInitials', JSON.stringify(teammates));
+      teammates.push(initials);
+      localStorage.setItem('teammatesInitials', JSON.stringify(teammates));
     }
 
 

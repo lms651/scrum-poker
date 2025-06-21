@@ -179,7 +179,23 @@ editBtn.addEventListener('click', () => {
   }
 });
 
-// Clear on unload
-window.addEventListener('beforeunload', () => {
+document.getElementById('end-game').addEventListener('click', () => {
+  // Clear everything related to the game
+  localStorage.removeItem('teammatesInitials');
+  localStorage.removeItem('productOwnerInitials');
   localStorage.removeItem('votes');
+  localStorage.removeItem('scoringMethod');
+
+  // Optional: clear any displayed content
+  document.querySelectorAll('.teammate-slot').forEach(el => el.remove());
+  document.getElementById('po-circle').textContent = '';
+  document.getElementById('story-text').textContent = '';
+
+  // Redirect to the setup/start page
+  window.location.href = 'index.html'; // ← change if your main page has a different name
 });
+
+// Clear on unload
+// window.addEventListener('beforeunload', () => {
+//   localStorage.removeItem('votes');
+// });
